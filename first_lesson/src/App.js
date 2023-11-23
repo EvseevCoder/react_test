@@ -5,6 +5,7 @@ import Post_Item from './components/post_item';
 import PostList from './components/postList';
 import MyButton from './components/UI/button/MyButton';
 import MyInput from './components/UI/input/MyInput';
+import PostForm from './components/postForm';
 
 function App() {
 
@@ -21,58 +22,22 @@ function App() {
     ])
 
 
-    const [title, setTitle] = useState()
-    const [body, setBody] = useState()
-
-
-
-    
-    const addNewPost = (e) => {
-        e.preventDefault();
-        const newPost = {
-            id: Date.now(),
-            title,
-            body
-        }
-        console.log(newPost);
-
+    const createPost = (newPost) => {
         setPosts([...posts, newPost])
     }
 
+    // получаем post из дочернего элемента
+    const removePost = (post) => {
+        setPosts(posts.filter(p => p.id !== post.id))
+    }
 
     return (
     <div className="App">
 
-        {/* Управляемый компонент */}
-        <form>
+        <PostForm create={createPost}/>
 
-            <MyInput 
-
-            value = {title}
-            onChange = {e => setTitle(e.target.value)}
-
-            type='text'
-            placeholder='Название поста'/>
-
-
-            <MyInput
-            value = {body}
-            onChange = {e => setBody(e.target.value)}
-            type='text'
-            placeholder='Описание поста'
-            />
-
-            <MyButton onClick={addNewPost}>Создаине поста</MyButton>
-            
-
-        </form>
-
-
-
-
-
-        <PostList posts={posts} title={'Список постов'}/>
-        <PostList posts={posts2} title={'Список постов Про Python'}/>
+        <PostList remove={removePost} posts={posts} title={'Список постов'}/>
+        <PostList remove={removePost} posts={posts2} title={'Список постов Про Python'}/>
     </div>
     );
 }
