@@ -1,11 +1,9 @@
-import React, { Component, useState } from 'react';
-import Counter from './components/counter';
+import React, { Component, useMemo, useState } from 'react';
 import './styles/App.css'
-import Post_Item from './components/post_item';
 import PostList from './components/postList';
-import MyButton from './components/UI/button/MyButton';
-import MyInput from './components/UI/input/MyInput';
 import PostForm from './components/postForm';
+import MySelect from './components/UI/select/MySelect';
+import MyInput from './components/UI/input/MyInput';
 
 function App() {
 
@@ -15,12 +13,18 @@ function App() {
         {id:3, title:'Заголовок', body: 'И еще немного текста'},
     ])
 
-    const [posts2, setPosts2] = useState([
-        {id:1, title:'Python', body: 'pythont - это программирование'},
-        {id:2, title:'Python', body: 'Тестовый текст'},
-        {id:3, title:'Python', body: 'И еще немного текста'},
-    ])
+    const [selectedSort, setSelectedSort] = useState('')
+    const [searchQuery, setSearchQuery] = useState('')
 
+    const sortedPosts = useMemo(() => {
+
+        console.log('Хук отработал');
+        if (selectedSort) {
+            return [...posts].sort((a, b) => a[selectedSort].localeCompare(b[selectedSort]))
+        }
+        return posts
+
+    }, [selectedSort, posts])
 
     const createPost = (newPost) => {
         setPosts([...posts, newPost])
@@ -31,13 +35,36 @@ function App() {
         setPosts(posts.filter(p => p.id !== post.id))
     }
 
+    const sortPosts = (sort) => {
+        setSelectedSort(sort)
+    }
+
+
     return (
     <div className="App">
 
+        <MyInput
+            placeholder='Поиск'
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+        />
         <PostForm create={createPost}/>
+        <hr style={{margin: '15px'}}/>
+        <div>
+            <MySelect
+                value={selectedSort}
+                onChange={sortPosts}
+                defaultValue = 'Cортировка'
+                options = {[
+                    {value: 'title', name: 'По названию'},
+                    {value: 'body', name: 'По описанию'}
+                ]}
 
-        <PostList remove={removePost} posts={posts} title={'Список постов'}/>
-        <PostList remove={removePost} posts={posts2} title={'Список постов Про Python'}/>
+            />
+        </div>
+        {posts.length !== 0 ? <PostList remove={removePost} posts={sortedPosts} title={'Список постов'}/>
+        : <h1 style={{textAlign: 'center', marginTop: '30px'}}>Посты не были найдены</h1>}
+        
     </div>
     );
 }

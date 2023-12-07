@@ -11,18 +11,19 @@ const PostForm = ({create}) => {
         e.preventDefault();
 
         const newPost = {
-            ...post, id: Date.now
+            ...post, id: Date.now()
         }
 
+        console.log(newPost);
+
         create(newPost)
-        setPost({'title': '', 'body': ''})
+        setPost({'title': '', 'body': ''}) 
     }
 
     return (
         <form>
 
             <MyInput 
-
             value = {post.title}
             onChange = {e => setPost({... post, title: e.target.value})}
 
