@@ -1,0 +1,33 @@
+.productsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 45px;
+    width: 80%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.productsElement {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+
+.productsElement__name {
+    margin-bottom: auto;
+    
+}
+
+.productsElement__img {
+    width: 100%;
+    height: 270px;
+    object-fit: contain;
+}
+
+.productsElement__price {
+    
+}
+
+.productsElement__btn{
+    
+}
