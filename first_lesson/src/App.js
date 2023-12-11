@@ -41,6 +41,7 @@ function App() {
 
 
     return (
+        // остановился на 1:18
     <div className="App">
 
         <MyInput
